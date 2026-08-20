@@ -154,6 +154,7 @@
             }
 
             .staticrypt-toggle-password-visibility {
+                box-sizing: content-box; /* override global border-box so padding doesn't collapse the 20px icon */
                 cursor: pointer;
                 height: 20px;
                 opacity: 55%;
@@ -905,7 +906,7 @@ exports.init = init;
                 templateToggleAltShow = "Show password",
                 templateToggleAltHide = "Hide password",
                 isRememberEnabled = false,
-                staticryptConfig = {"staticryptEncryptedMsgUniqueVariableName":"0502c947507cc5b0ba38738ded68dccd5b4078c11ea1c262fc0f00257120eb4423eb6e264a8e4a2e0d7f5262c4fc695d6e15a7b4a8422e2d28faaf14c265f7816db0550ccc0cc1b2117a5834d1130bafedd27ca48c536580c192f45c9b2b203d6536d72e3fe23aa19490af8316f8e97fb27eaca0f8ec55f905da4fae20a890dde20a0d6aee2f66f91219f6ee873ecc267e88b6765b7d92e637d9091f5d22d45117f2db184799b5afe9216eefe56d0860f4afb1f9a5a1ff83b20fa3b88321c108e530eb40020ea86227aa67e24fcd8d1b4f7d11d474635ccb511d43d0ba9c50d3d3c507c3fa384e7eedd0133fa164a076c5beaef96e87a7d733bf12f6eea1f4c96eda8d21a28ef164837f8eee96005ac0994de356a9fe8d04af9d6de20f0c8184304c180f7e5831e3443075de5dde4c16f2bcabe716b8a76e25c6f04143eaec32f980478dbd6b02da5f1ca84b4e71866c28042913b87cce102466c9c648040e7248b5bc23e908fe7bdef72f3bdd80e764eb4d6cce9bba263b32eeef02b826b24dc79bf782962a826999d18599f3164f4bf08ff0fa9fed66ff8a0382b94f2812b73d225a3c60aef52a42a078ae0f82beff","isRememberEnabled":false,"rememberDurationInDays":0,"staticryptSaltUniqueVariableName":"596544c60bff9d2f45163c2aa3aeca70"};
+                staticryptConfig = {"staticryptEncryptedMsgUniqueVariableName":"a4386c555b61a73337bcf351b935083dd286dbb431ccabf3e154cfb3d7281ac33eff99e77ca8b8e1d5f86a58642ee6d0eaa0fae5e37bcd3a8549068515bbd71c81cd17ba366934de1e35f76194b8fc55a872a12b335e9d46666ae6f8fe203d286e443876ef22d6ee493f8ee371a5c6f2b9e1dc52c164543d7217e7fbab7fe5b7d9d967e14eeebc43946e5eba010f4cba2bd601c60c65a8ce1b14038802a941aaecef8a52b856b4dcef060ffbde4050098e0a3913d5d9e9f008573d95979362687e3fe7a45630fe45d83b8d255e9c313c76fc358533e8953a056e9577e6e31b5d170b3a321626edbcde0cafeb37b6069abc912619e737e5a94c816a6684960fc2f79d25cf96324660cba8affe81d9576d506810df06031a6daae0279735bb0c8a6f3638cf8e03171361dacf332b3bfa90172cb9b617ffc520c9a15efed84166222df3f97c33604c8c73eed981237a3274322d65b3b342a2e6096e2e4144a7364c0ee32e8fd775f3862dc60461033facd6757ffb244d5bf85a676b004b5318280a894a3825a3feb390bd76f9e1cdce8be4e12cc9c813027dce512b50b7cd7e7d86a6af5ac4d499a374b710dcbda8430ead","isRememberEnabled":false,"rememberDurationInDays":0,"staticryptSaltUniqueVariableName":"a68ef1ffe5bff4f19ff20fc2812032c6"};
 
             // you can edit these values to customize some of the behavior of StatiCrypt
             const templateConfig = {
