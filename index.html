@@ -130,6 +130,11 @@
                 box-shadow: 0 0 0 3px rgba(207, 0, 144, 0.16);
             }
 
+            /* error state: turn the input outline pink when there's a message */
+            .staticrypt-password-container.staticrypt-has-error {
+                border-color: var(--medium-pink);
+            }
+
             .staticrypt-form input[type="password"],
             .staticrypt-form input[type="text"] {
                 background: transparent;
@@ -158,6 +163,16 @@
                 top: 50%;
                 transform: translateY(-50%);
                 width: 20px;
+            }
+
+            /* inline error message — replaces the browser's native alert() so the
+               origin (github.io) is never shown. Medium Pink on Off-White is AA-compliant. */
+            .staticrypt-error {
+                margin: -4px 0 16px;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 1.4;
+                color: var(--medium-pink);
             }
 
             .staticrypt-form .staticrypt-decrypt-button {
@@ -274,6 +289,8 @@
                                 src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNS4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTM4LjggNS4xQzI4LjQtMy4xIDEzLjMtMS4yIDUuMSA5LjJTLTEuMiAzNC43IDkuMiA0Mi45bDU5MiA0NjRjMTAuNCA4LjIgMjUuNSA2LjMgMzMuNy00LjFzNi4zLTI1LjUtNC4xLTMzLjdMNTI1LjYgMzg2LjdjMzkuNi00MC42IDY2LjQtODYuMSA3OS45LTExOC40YzMuMy03LjkgMy4zLTE2LjcgMC0yNC42Yy0xNC45LTM1LjctNDYuMi04Ny43LTkzLTEzMS4xQzQ2NS41IDY4LjggNDAwLjggMzIgMzIwIDMyYy02OC4yIDAtMTI1IDI2LjMtMTY5LjMgNjAuOEwzOC44IDUuMXpNMjIzLjEgMTQ5LjVDMjQ4LjYgMTI2LjIgMjgyLjcgMTEyIDMyMCAxMTJjNzkuNSAwIDE0NCA2NC41IDE0NCAxNDRjMCAyNC45LTYuMyA0OC4zLTE3LjQgNjguN0w0MDggMjk0LjVjOC40LTE5LjMgMTAuNi00MS40IDQuOC02My4zYy0xMS4xLTQxLjUtNDcuOC02OS40LTg4LjYtNzEuMWMtNS44LS4yLTkuMiA2LjEtNy40IDExLjdjMi4xIDYuNCAzLjMgMTMuMiAzLjMgMjAuM2MwIDEwLjItMi40IDE5LjgtNi42IDI4LjNsLTkwLjMtNzAuOHpNMzczIDM4OS45Yy0xNi40IDYuNS0zNC4zIDEwLjEtNTMgMTAuMWMtNzkuNSAwLTE0NC02NC41LTE0NC0xNDRjMC02LjkgLjUtMTMuNiAxLjQtMjAuMkw4My4xIDE2MS41QzYwLjMgMTkxLjIgNDQgMjIwLjggMzQuNSAyNDMuN2MtMy4zIDcuOS0zLjMgMTYuNyAwIDI0LjZjMTQuOSAzNS43IDQ2LjIgODcuNyA5MyAxMzEuMUMxNzQuNSA0NDMuMiAyMzkuMiA0ODAgMzIwIDQ4MGM0Ny44IDAgODkuOS0xMi45IDEyNi4yLTMyLjVMMzczIDM4OS45eiIvPjwvc3ZnPg=="
                             />
                         </div>
+
+                        <p id="staticrypt-error" class="staticrypt-error hidden" role="alert" aria-live="polite"></p>
 
                         <label id="staticrypt-remember-label" class="staticrypt-remember hidden">
                             <input id="staticrypt-remember" type="checkbox" name="remember" />
@@ -884,11 +901,11 @@ exports.init = init;
 
   return exports;
 })());
-            const templateError = "Bad password!",
+            const templateError = "Wrong password - please try again.",
                 templateToggleAltShow = "Show password",
                 templateToggleAltHide = "Hide password",
                 isRememberEnabled = false,
-                staticryptConfig = {"staticryptEncryptedMsgUniqueVariableName":"01b7b82399906fb7a65c18867c65f802be671160bb38344afdce8aa9fb9a2b10ffddaadbde45fd72601e1c6050cbc5e1c8eb50992654161839a38ce21bde7275cc0c15804ee198a7ad079aaf2ab96a0f9f4be265be91c51c5f9ce8a66633768bedaac5df97ab56e395b03fcc9a20c70f5ddfb45b12631c432c3a2f76c85c15a4bb80a5bceecb9c36abb003bebe8ff7962216b35ababfe67b048f19feaa90b51fa82350d5897be12e0d25a2f87769dd17fe58080b3346d5945fe77c9ecb88f972b928e27aceb968884b598a8919c1f775cd9d98e95d1f93a0f15b598a047a4d7fab6fb2a0b179b8b90e50d13dd2843e326517b4697cb2d9a21935d0a004bea48f20ac12f94c18f5ea1a7bf2445b8f2596b1f7e6e2a333e6980bd439efedaab320365787914739ec10f9b5570cc99a1c59f74798e4a58f98f247d89ddd8b13ce88580e5d444dab1246fe895c0d0ff0d4cb4dfac626f959b791ce5499748ec240a5a34a35fecc98a3ee659f1fb7bac2fb622261fced8cdb4aaffc63e86a2f9908af05656efb7681b051d90eeb2cb524c8c35f14f8948359a1997adc1c29056e46beeda5aebe31761b9588f0ed6b0a934d42","isRememberEnabled":false,"rememberDurationInDays":0,"staticryptSaltUniqueVariableName":"6e4cc20680ecb07e34e14bbc7826a847"};
+                staticryptConfig = {"staticryptEncryptedMsgUniqueVariableName":"0502c947507cc5b0ba38738ded68dccd5b4078c11ea1c262fc0f00257120eb4423eb6e264a8e4a2e0d7f5262c4fc695d6e15a7b4a8422e2d28faaf14c265f7816db0550ccc0cc1b2117a5834d1130bafedd27ca48c536580c192f45c9b2b203d6536d72e3fe23aa19490af8316f8e97fb27eaca0f8ec55f905da4fae20a890dde20a0d6aee2f66f91219f6ee873ecc267e88b6765b7d92e637d9091f5d22d45117f2db184799b5afe9216eefe56d0860f4afb1f9a5a1ff83b20fa3b88321c108e530eb40020ea86227aa67e24fcd8d1b4f7d11d474635ccb511d43d0ba9c50d3d3c507c3fa384e7eedd0133fa164a076c5beaef96e87a7d733bf12f6eea1f4c96eda8d21a28ef164837f8eee96005ac0994de356a9fe8d04af9d6de20f0c8184304c180f7e5831e3443075de5dde4c16f2bcabe716b8a76e25c6f04143eaec32f980478dbd6b02da5f1ca84b4e71866c28042913b87cce102466c9c648040e7248b5bc23e908fe7bdef72f3bdd80e764eb4d6cce9bba263b32eeef02b826b24dc79bf782962a826999d18599f3164f4bf08ff0fa9fed66ff8a0382b94f2812b73d225a3c60aef52a42a078ae0f82beff","isRememberEnabled":false,"rememberDurationInDays":0,"staticryptSaltUniqueVariableName":"596544c60bff9d2f45163c2aa3aeca70"};
 
             // you can edit these values to customize some of the behavior of StatiCrypt
             const templateConfig = {
@@ -900,6 +917,21 @@ exports.init = init;
 
             // init the staticrypt engine
             const staticrypt = staticryptInitiator.init(staticryptConfig, templateConfig);
+
+            // inline error helpers — used instead of the browser's native alert() so the page
+            // origin (e.g. "<host> says") is never surfaced to the participant
+            const errorElement = document.getElementById("staticrypt-error");
+            const passwordContainer = document.querySelector(".staticrypt-password-container");
+            function showError(message) {
+                errorElement.textContent = message;
+                errorElement.classList.remove("hidden");
+                if (passwordContainer) passwordContainer.classList.add("staticrypt-has-error");
+            }
+            function clearError() {
+                errorElement.textContent = "";
+                errorElement.classList.add("hidden");
+                if (passwordContainer) passwordContainer.classList.remove("staticrypt-has-error");
+            }
 
             // try to automatically decrypt on load if there is a saved password
             window.onload = async function () {
@@ -945,6 +977,7 @@ exports.init = init;
             // handle password form submission
             document.getElementById("staticrypt-form").addEventListener("submit", async function (e) {
                 e.preventDefault();
+                clearError();
 
                 const password = document.getElementById("staticrypt-password").value,
                     isRememberChecked = document.getElementById("staticrypt-remember").checked;
@@ -952,7 +985,8 @@ exports.init = init;
                 const { isSuccessful } = await staticrypt.handleDecryptionOfPage(password, isRememberChecked);
 
                 if (!isSuccessful) {
-                    alert(templateError);
+                    // inline message instead of alert() — no origin prefix is shown
+                    showError(templateError);
                 }
             });
         </script>
